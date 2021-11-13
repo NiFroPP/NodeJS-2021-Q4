@@ -1,55 +1,49 @@
-const path = require("path");
 const fs = require("fs");
-const { pipeline, Transform } = require("stream");
+const path = require("path");
+const { argv, stderr, exit } = process;
+const { errColor } = require("./src/utils");
 
-const encryption = require("./src/encryption");
+const getPipeStream = require("./src/streams");
 
-process.argv.slice(2);
+argv.slice(2);
 
 const getFlagValue = flag => {
-  const flagInd = process.argv.indexOf(flag);
+  const flagInd = argv.indexOf(flag);
 
-  return flagInd !== -1 ? process.argv[flagInd + 1] : null;
+  return flagInd !== -1 ? argv[flagInd + 1] : null;
 };
 
-const inputPath = getFlagValue("-i");
-const outputPath = getFlagValue("-o");
+let inputPath = getFlagValue("-i");
+if (inputPath === null) {
+  inputPath = "";
+}
+inputPath = path.resolve(__dirname, inputPath);
+
+let outputPath = getFlagValue("-o");
+if (outputPath === null) {
+  outputPath = "";
+}
+
+outputPath = path.resolve(__dirname, outputPath);
+
 const config = getFlagValue("-c");
 
-const readStream = inputPath => {
-  if (!inputPath) {
-    process.stderr.write("Error: File to read does not exist...\n");
-    process.stdout.write("Please Enter text to encode:\n");
-
-    return process.stdin.on("data", () =>
-      setImmediate(() => process.stdout.write("Enter text to encode or 'Ctrl + C' to exit:\n"))
-    );
-  }
-
-  return fs.createReadStream(path.resolve(__dirname, inputPath));
-};
-
-const transformStream = (shift, code) => {
-  return new Transform({
-    transform(chunk, encoding, callback) {
-      callback(null, encryption(chunk.toString(), shift, code));
-    },
-  });
-};
-
-const writeStream = outputFilePath => {
-  if (!outputFilePath) return process.stdout;
-
-  return fs.createWriteStream(path.resolve(__dirname, outputFilePath), { flags: "a" });
-};
-
-const getPipeStream = (inputPathName, outputPathName, config) => {
-  pipeline(readStream(inputPathName), transformStream(1, 1), writeStream(outputPathName), error => {
+if (inputPath) {
+  fs.readFile(inputPath, "utf-8", (error, data) => {
     if (error) {
-      process.stderr.write("Error: Unexpected error! Try again!");
-      process.exit(1);
+      stderr.write(errColor(`No such file "${inputPath}"!\n`));
+      exit(1);
     }
   });
-};
+}
+
+if (outputPath) {
+  fs.readFile(outputPath, "utf-8", (error, data) => {
+    if (error) {
+      stderr.write(errColor(`Error: No such file "${outputPath}"!\n`));
+      exit(1);
+    }
+  });
+}
 
 getPipeStream(inputPath, outputPath, config);
