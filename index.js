@@ -1,49 +1,16 @@
-const fs = require("fs");
 const path = require("path");
-const { argv, stderr, exit } = process;
-const { errColor } = require("./src/utils");
+const { getFlagValue } = require("./src/utils");
+const { validArg } = require("./src/validation");
+const { OPTIONS } = require("./src/constants");
 
 const getPipeStream = require("./src/streams");
 
-argv.slice(2);
+validArg(OPTIONS.i);
+validArg(OPTIONS.o);
+validArg(OPTIONS.c);
 
-const getFlagValue = flag => {
-  const flagInd = argv.indexOf(flag);
-
-  return flagInd !== -1 ? argv[flagInd + 1] : null;
-};
-
-let inputPath = getFlagValue("-i");
-if (inputPath === null) {
-  inputPath = "";
-}
-inputPath = path.resolve(__dirname, inputPath);
-
-let outputPath = getFlagValue("-o");
-if (outputPath === null) {
-  outputPath = "";
-}
-
-outputPath = path.resolve(__dirname, outputPath);
-
-const config = getFlagValue("-c");
-
-if (inputPath) {
-  fs.readFile(inputPath, "utf-8", (error, data) => {
-    if (error) {
-      stderr.write(errColor(`No such file "${inputPath}"!\n`));
-      exit(1);
-    }
-  });
-}
-
-if (outputPath) {
-  fs.readFile(outputPath, "utf-8", (error, data) => {
-    if (error) {
-      stderr.write(errColor(`Error: No such file "${outputPath}"!\n`));
-      exit(1);
-    }
-  });
-}
+const inputPath = path.resolve(__dirname, getFlagValue(OPTIONS.i));
+const outputPath = path.resolve(__dirname, getFlagValue(OPTIONS.o));
+const config = getFlagValue(OPTIONS.c);
 
 getPipeStream(inputPath, outputPath, config);

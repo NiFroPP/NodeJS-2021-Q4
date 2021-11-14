@@ -16,5 +16,10 @@ const SHIFTS = {
   caesar: 1,
   rot_8: 8,
 };
+const OPTIONS = {
+  i: "-i",
+  o: "-o",
+  c: "-c",
+};
 
-module.exports = { ALPHABET, CHARS, ARGUMENTS, SHIFTS };
+module.exports = { ALPHABET, CHARS, ARGUMENTS, SHIFTS, OPTIONS };

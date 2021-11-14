@@ -74,7 +74,7 @@ const encoding = (text, [cipher, codeFlag]) => {
       process.exit(1);
 
     default:
-      process.stderr.write(errColor(`There is no such code "${cipher}"!\n`));
+      process.stderr.write(errColor(`There is no such code "${cipher || "-c"}"!\n`));
       process.stderr.write(errColor(`Please, enter correct code "C0", "C1", "A", "R0" or "R1"...\n`));
       process.exit(1);
   }
