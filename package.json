@@ -4,7 +4,8 @@
   "description": "Node.JS 2021 Q4 Rolling Scopes School courses",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/NiFroPP/NodeJS-2021-Q4/issues"
   },
-  "homepage": "https://github.com/NiFroPP/NodeJS-2021-Q4#readme"
+  "homepage": "https://github.com/NiFroPP/NodeJS-2021-Q4#readme",
+  "devDependencies": {
+    "jest": "^27.3.1"
+  }
 }
