@@ -16,13 +16,11 @@ const validArg = arg => {
   }
 
   if (arg !== OPTIONS.c) {
-    if (argPath) {
-      fs.access(argPath, (error, data) => {
-        if (error) {
-          process.stderr.write(errColor(`No such file "${argPath}"!\n`));
-          process.exit(1);
-        }
-      });
+    try {
+      fs.accessSync(argPath);
+    } catch (error) {
+      process.stderr.write(errColor(`No such file "${argPath}"!\n`));
+      process.exit(1);
     }
   }
 };
