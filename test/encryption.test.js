@@ -25,14 +25,14 @@ const errorConfig = {
 };
 
 describe("Testing function encryption", () => {
-  test("should return encryption text", () => {
+  test("User passes correct sequence of symbols as argument for '-c' that matches regular expression", () => {
     expect(encryption(inputText, config1.input)).toBe(config1.output);
     expect(encryption(inputText, config2.input)).toBe(config2.output);
     expect(encryption(inputText, config3.input)).toBe(config3.output);
     expect(encryption(inputText, config4.input)).toBe(config4.output);
   });
 
-  test("should exit the program", () => {
+  test("User passes incorrent symbols in argument for '-c' ", () => {
     process.argv.push("-c", "C1");
 
     const mockExit = jest.spyOn(process, "exit").mockImplementation(number => {

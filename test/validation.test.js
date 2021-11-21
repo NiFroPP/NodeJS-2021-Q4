@@ -1,8 +1,7 @@
 const { validArg } = require("../src/validation");
-const { errColor, greenColor, getFlagValue, getCountArg } = require("../src/utils");
 
 describe("Testing function validArg", () => {
-  test("should return transform string", () => {
+  test("User passes the same cli argument twice", () => {
     process.argv.length = 0;
     process.argv.push("node", "index", "-c", "C1", "-c", "C0");
 
@@ -34,7 +33,7 @@ describe("Testing function validArg", () => {
     mockExit.mockRestore();
   });
 
-  test("should process.exit called with 1", () => {
+  test("User passes -i argument with path that doesn't exist or with no read access", () => {
     process.argv.length = 0;
     process.argv.push("node", "index", "-i", "./error");
 
@@ -44,6 +43,22 @@ describe("Testing function validArg", () => {
 
     expect(() => {
       validArg("-i");
+    }).toThrow();
+
+    expect(mockExit).toHaveBeenCalledWith(1);
+    mockExit.mockRestore();
+  });
+
+  test("User passes -o argument with path to directory that doesn't exist or with no read access", () => {
+    process.argv.length = 0;
+    process.argv.push("node", "index", "-o", "./error");
+
+    const mockExit = jest.spyOn(process, "exit").mockImplementation(number => {
+      throw new Error("process.exit: " + number);
+    });
+
+    expect(() => {
+      validArg("-o");
     }).toThrow();
 
     expect(mockExit).toHaveBeenCalledWith(1);
