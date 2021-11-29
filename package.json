@@ -1,0 +1,24 @@
+{
+  "name": "nodejs-2021-q4",
+  "version": "1.0.0",
+  "description": "Node.JS 2021 Q4 Rolling Scopes School courses",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:coverage": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NiFroPP/NodeJS-2021-Q4.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NiFroPP/NodeJS-2021-Q4/issues"
+  },
+  "homepage": "https://github.com/NiFroPP/NodeJS-2021-Q4#readme",
+  "devDependencies": {
+    "jest": "^27.3.1"
+  }
+}
